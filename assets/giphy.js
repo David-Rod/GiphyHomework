@@ -13,10 +13,9 @@ for (var k = 0; k < topics.length; k++) {
     $("#animalbutton").append(buttonName);
 }
 
-$(".animalButtons").on("click", function () {
-    var animalbutton = $(this).attr("data-animal");
+var getNewImages = function(searchText) {
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        animalbutton + "&api_key=" + apiKey + "&limit=10";
+        searchText + "&api_key=" + apiKey + "&limit=10";
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -35,8 +34,21 @@ $(".animalButtons").on("click", function () {
             $(gifDiv).append(animalImg, p);
 
 
-            $("#animalgifs").append(gifDiv);            
+            $("#animalgifs").append(gifDiv);
         }
 
     })
+}
+
+$(".animalButtons").on("click", function () {
+    var animalbutton = $(this).attr("data-animal");
+    getNewImages(animalbutton);
+    
+});
+
+$("#animal-form").on("submit", function(e) {
+    e.preventDefault();
+    var searchedAnimal = $("#animal-input").val().trim();
+    getNewImages(searchedAnimal);
+    console.log(searchedAnimal);
 });
